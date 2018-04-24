@@ -79,10 +79,10 @@ public class AndroidAESCCMModule extends ReactContextBaseJavaModule {
             promise.reject("Key not set / No nonce");
         }
 
-        byte[] aadBytes = new Byte(aad.size());
-        byte[] encryptedBytes = new Byte(clear.size());
-        byte[] nonceBytes = new Byte(nonce.size());
-        byte[] tagBytes = new Byte(tag.size());
+        byte[] aadBytes = new byte[aad.size()];
+        byte[] encryptedBytes = new byte[clear.size()];
+        byte[] nonceBytes = new byte[nonce.size()];
+        byte[] tagBytes = new byte[tag.size()];
         byte[] clear;
 
         for (int i = 0; i < aad.size(); i++) {
@@ -124,9 +124,9 @@ public class AndroidAESCCMModule extends ReactContextBaseJavaModule {
             promise.reject("Key not set / No nonce");
         }
 
-        byte[] aadBytes = new Byte(aad.size());
-        byte[] clearBytes = new Byte(clear.size());
-        byte[] nonceBytes = new Byte(nonce.size());
+        byte[] aadBytes = new byte[aad.size()];
+        byte[] clearBytes = new byte[clear.size()];
+        byte[] nonceBytes = new byte[nonce.size()];
         byte[] encrypted;
 
         for (int i = 0; i < aad.size(); i++) {
