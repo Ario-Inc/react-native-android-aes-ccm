@@ -15,6 +15,21 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.Provider;
+import java.security.Security;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.GCMParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+
 import org.spongycastle.jce.provider.BouncyCastleProvider;
 
 public class AndroidAESCCMModule extends ReactContextBaseJavaModule {
