@@ -26,6 +26,7 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.AEADBadTagException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
@@ -80,7 +81,7 @@ public class AndroidAESCCMModule extends ReactContextBaseJavaModule {
         }
 
         byte[] aadBytes = new byte[aad.size()];
-        byte[] encryptedBytes = new byte[clear.size()];
+        byte[] encryptedBytes = new byte[encrypted.size()];
         byte[] nonceBytes = new byte[nonce.size()];
         byte[] tagBytes = new byte[tag.size()];
         byte[] clear;
