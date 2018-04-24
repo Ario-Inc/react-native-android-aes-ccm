@@ -1,0 +1,30 @@
+{
+    "name": "react-native-android-aes-ccm",
+    "version": "0.0.1",
+    "description": "A react-native implementation for doing AES-CCM encryption",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "react",
+        "react-component",
+        "react-native",
+        "android",
+        "aes",
+        "aes-ccm"
+    ],
+    "author": "Will Dimmit <will@arioliving.com>",
+    "license": "Apache-2.0",
+    "repository": "https://github.com/Ario-Inc/react-native-android-aes-ccm",
+    "bugs": "https://github.com/Ario-Inc/react-native-android-aes-ccm/issues",
+    "peerDependencies": {
+        "react-native": ">=0.50"
+    },
+    "dependencies": {},
+    "rnpm": {
+        "android": {
+            "packageInstance": "new AndroidAESCCMPackage()"
+        }
+    }
+}
