@@ -106,6 +106,8 @@ public class AndroidAESCCMModule extends ReactContextBaseJavaModule {
             mAesCipher.updateAAD(aadBytes);
             clear = mAesCipher.doFinal(encryptedBytes);
             promise.resolve(clear);
+        } catch (AEADBadTagException e) {
+            promise.reject("Invalid tag");
         } catch (InvalidKeyException e) {
             promise.reject("Invalid Key");
         } catch (InvalidAlgorithmParameterException e) {
@@ -114,8 +116,6 @@ public class AndroidAESCCMModule extends ReactContextBaseJavaModule {
             promise.reject("Invalid Block Size");
         } catch (BadPaddingException e) {
             promise.reject("Invalid Padding");
-        } catch (AEADBadTagException e) {
-            promise.reject("Invalid tag");
         }
     }
 
