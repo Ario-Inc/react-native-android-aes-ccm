@@ -101,9 +101,9 @@ public class AndroidAESCCMModule extends ReactContextBaseJavaModule {
         try {
             SecretKeySpec skeySpec = new SecretKeySpec(mKey, "AES");
             GCMParameterSpec ccmSpec = new GCMParameterSpec(TAG_SIZE, nonceBytes);
-            aesCipher.init(Cipher.DECRYPT_MODE, skeySpec, ccmSpec);
-            aesCipher.updateAAD(aadBytes);
-            clear = aesCipher.doFinal(encryptedBytes);
+            mAesCipher.init(Cipher.DECRYPT_MODE, skeySpec, ccmSpec);
+            mAesCipher.updateAAD(aadBytes);
+            clear = mAesCipher.doFinal(encryptedBytes);
             promise.resolve(clear);
         } catch (InvalidKeyException e) {
             promise.reject("Invalid Key");
@@ -142,9 +142,9 @@ public class AndroidAESCCMModule extends ReactContextBaseJavaModule {
             try {
                 SecretKeySpec skeySpec = new SecretKeySpec(mKey, "AES");
                 GCMParameterSpec ccmSpec = new GCMParameterSpec(TAG_SIZE, nonceBytes);
-                aesCipher.init(Cipher.ENCRYPT_MODE, skeySpec, ccmSpec);
-                aesCipher.updateAAD(aadBytes);
-                encrypted = aesCipher.doFinal(clearBytes);
+                mAesCipher.init(Cipher.ENCRYPT_MODE, skeySpec, ccmSpec);
+                mAesCipher.updateAAD(aadBytes);
+                encrypted =mAesCipher.doFinal(clearBytes);
                 promise.resolve(encrypted);
             } catch (InvalidKeyException e) {
                 promise.reject("Invalid Key");
