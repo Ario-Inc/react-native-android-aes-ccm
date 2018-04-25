@@ -38,7 +38,10 @@ public class AndroidAESCCMModule extends ReactContextBaseJavaModule {
     public static final Integer TAG_SIZE = 32;
 
     private static Boolean mKeyIsSet = false;
-    private static byte[] mKey;
+    private static byte[] mKey = { (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00, 
+                            (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00, 
+                            (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00, 
+                            (byte)0x00 };
     private static Cipher mAesCipher;
 
     static {
@@ -58,6 +61,8 @@ public class AndroidAESCCMModule extends ReactContextBaseJavaModule {
         } catch (NoSuchPaddingException e) {
             e.printStackTrace();
         }
+
+        mKey = new byte[]
 
     }
 
