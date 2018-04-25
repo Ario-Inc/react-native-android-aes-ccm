@@ -38,10 +38,9 @@ public class AndroidAESCCMModule extends ReactContextBaseJavaModule {
     public static final Integer TAG_SIZE = 32;
 
     private static Boolean mKeyIsSet = false;
-    private static byte[] mKey = { (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00, 
-                            (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00, 
-                            (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00, 
-                            (byte)0x00 };
+    private static byte[] mKey = { (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+            (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+            (byte) 0x00, (byte) 0x00 };
     private static Cipher mAesCipher;
 
     static {
@@ -77,7 +76,8 @@ public class AndroidAESCCMModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void decrypt(ReadableArray aad, ReadableArray encrypted, ReadableArray nonce, ReadableArray tag, Promise promise) {
+    public void decrypt(ReadableArray aad, ReadableArray encrypted, ReadableArray nonce, ReadableArray tag,
+            Promise promise) {
         if (!mKeyIsSet || nonce.size() == 0 || tag.size() != (TAG_SIZE / 8)) {
             promise.reject("Key not set / No nonce");
         }
@@ -100,7 +100,7 @@ public class AndroidAESCCMModule extends ReactContextBaseJavaModule {
         for (int i = 0; i < tag.size(); i++) {
             tagBytes[i] = (byte) tag.getInt(i);
         }
-        
+
         try {
             SecretKeySpec skeySpec = new SecretKeySpec(mKey, "AES");
             GCMParameterSpec ccmSpec = new GCMParameterSpec(TAG_SIZE, nonceBytes);
@@ -130,7 +130,7 @@ public class AndroidAESCCMModule extends ReactContextBaseJavaModule {
         byte[] aadBytes = new byte[aad.size()];
         byte[] clearBytes = new byte[clear.size()];
         byte[] nonceBytes = new byte[nonce.size()];
-        byte[] encrypted = new byte[aad.size + clear.size + nonce.size + TAG_SIZE];
+        byte[] encrypted = new byte[aad.size() + clear.size() + nonce.size() + TAG_SIZE];
 
         for (int i = 0; i < aad.size(); i++) {
             aadBytes[i] = (byte) aad.getInt(i);
@@ -142,27 +142,27 @@ public class AndroidAESCCMModule extends ReactContextBaseJavaModule {
             nonceBytes[i] = (byte) nonce.getInt(i);
         }
 
-            try {
-                SecretKeySpec skeySpec = new SecretKeySpec(mKey, "AES");
-                GCMParameterSpec ccmSpec = new GCMParameterSpec(TAG_SIZE, nonceBytes);
-                mAesCipher.init(Cipher.ENCRYPT_MODE, skeySpec, ccmSpec);
-                mAesCipher.updateAAD(aadBytes);
-                encrypted = mAesCipher.doFinal(clearBytes);
-                
-                ReadableArray output = new ReadableArray(encrypted.length);
-                for (int i = 0; i < encrypted.length; i++) {
-                    output[i] = (int) encrypted[i];
-                }
-                promise.resolve(output);
-            } catch (InvalidKeyException e) {
-                promise.reject("Invalid Key");
-            } catch (InvalidAlgorithmParameterException e) {
-                promise.reject("Invalid Algorithm");
-            } catch (IllegalBlockSizeException e) {
-                    promise.reject("Invalid Block Size");
-            } catch (BadPaddingException e) {
-                    promise.reject("Invalid Padding");
+        try {
+            SecretKeySpec skeySpec = new SecretKeySpec(mKey, "AES");
+            GCMParameterSpec ccmSpec = new GCMParameterSpec(TAG_SIZE, nonceBytes);
+            mAesCipher.init(Cipher.ENCRYPT_MODE, skeySpec, ccmSpec);
+            mAesCipher.updateAAD(aadBytes);
+            encrypted = mAesCipher.doFinal(clearBytes);
+
+            WritableNativeArray output = new WritableNativeArray();
+            for (int i = 0; i < encrypted.length; i++) {
+                output.pushInt(encrypted[i] & 0xFF);
             }
+            promise.resolve(output);
+        } catch (InvalidKeyException e) {
+            promise.reject("Invalid Key");
+        } catch (InvalidAlgorithmParameterException e) {
+            promise.reject("Invalid Algorithm");
+        } catch (IllegalBlockSizeException e) {
+            promise.reject("Invalid Block Size");
+        } catch (BadPaddingException e) {
+            promise.reject("Invalid Padding");
+        }
     }
 
     // private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
