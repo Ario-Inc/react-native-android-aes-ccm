@@ -130,7 +130,7 @@ public class AndroidAESCCMModule extends ReactContextBaseJavaModule {
         byte[] aadBytes = new byte[aad.size()];
         byte[] clearBytes = new byte[clear.size()];
         byte[] nonceBytes = new byte[nonce.size()];
-        byte[] encrypted;
+        byte[] encrypted = new byte[aad.size + clear.size + nonce.size + TAG_SIZE];
 
         for (int i = 0; i < aad.size(); i++) {
             aadBytes[i] = (byte) aad.getInt(i);
@@ -147,8 +147,13 @@ public class AndroidAESCCMModule extends ReactContextBaseJavaModule {
                 GCMParameterSpec ccmSpec = new GCMParameterSpec(TAG_SIZE, nonceBytes);
                 mAesCipher.init(Cipher.ENCRYPT_MODE, skeySpec, ccmSpec);
                 mAesCipher.updateAAD(aadBytes);
-                encrypted =mAesCipher.doFinal(clearBytes);
-                promise.resolve(encrypted);
+                encrypted = mAesCipher.doFinal(clearBytes);
+                
+                ReadableArray output = new ReadableArray(encrypted.length);
+                for (int i = 0; i < encrypted.length; i++) {
+                    output[i] = (int) encrypted[i];
+                }
+                promise.resolve(output);
             } catch (InvalidKeyException e) {
                 promise.reject("Invalid Key");
             } catch (InvalidAlgorithmParameterException e) {
