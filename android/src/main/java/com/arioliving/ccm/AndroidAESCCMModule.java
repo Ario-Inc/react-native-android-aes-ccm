@@ -61,9 +61,6 @@ public class AndroidAESCCMModule extends ReactContextBaseJavaModule {
         } catch (NoSuchPaddingException e) {
             e.printStackTrace();
         }
-
-        mKey = new byte[]
-
     }
 
     @Override
